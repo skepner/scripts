@@ -1,0 +1,9 @@
+#! /bin/sh
+if [ -x /usr/local/bin/gtime ]; then
+    exec /usr/local/bin/gtime -f '<Time %E>' "$@"
+elif [ -x /opt/local/bin/gtime ]; then
+    exec /opt/local/bin/gtime -f '<Time %E>' "$@"
+else
+    export TIME='<Time %E>'
+    exec /usr/bin/time "$@"
+fi

@@ -1,0 +1,4 @@
+#! /bin/sh
+for v in "$@"; do
+    printf "%d\n0x%X\n#%06X\n" $v $v $v
+done

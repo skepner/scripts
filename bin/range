@@ -1,0 +1,27 @@
+#! /usr/bin/env python
+
+import sys, optparse
+
+start = 0
+end = None
+step = 1
+
+parser = optparse.OptionParser(description='Expands range of numbers.',
+                                   usage='%prog [options] [<start(0)>(inclusive)] <end>(exclusive) [<step(1)>]')
+parser.add_option("-f", "--format", action="store", dest="format", default="%d", help='format to print numbers')
+parser.add_option("-s", "--separator", action="store", dest="separator", default=" ", help='numbers separator')
+(options, args) = parser.parse_args()
+if len(args) == 1:
+	end = int(args[0])
+elif len(args) == 2:
+	start = int(args[0])
+	end = int(args[1])
+elif len(args) == 3:
+	start = int(args[0])
+	end = int(args[1])
+	step = int(args[2])
+else:
+    parser.print_help()
+    sys.exit(1)
+
+print options.separator.join([(options.format % i) for i in range(start, end, step)])

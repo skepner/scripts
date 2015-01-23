@@ -1,0 +1,9 @@
+#! /bin/sh
+
+if [ $# -ne 1 ]; then
+   echo "Usage: $(basename $0) <command>"
+   exit 1
+fi
+
+osascript -e 'tell app "Emacs" to activate'
+exec /usr/local/bin/emacsclient --alternate-editor="" -f /Users/eu/.emacs.d/server/server --eval '(progn (delete-other-windows) (compile "'"$1"'"))' >&/dev/null

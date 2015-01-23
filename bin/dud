@@ -1,0 +1,2 @@
+#! /bin/sh
+/usr/bin/du -sk * | /usr/bin/sort -k 1 -n

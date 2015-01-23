@@ -1,0 +1,6 @@
+#! /usr/bin/osascript
+tell application "Mail"
+    repeat with theAccount in every account
+        synchronize with theAccount
+    end repeat
+end tell

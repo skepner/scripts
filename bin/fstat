@@ -1,0 +1,22 @@
+#! /usr/bin/env python
+
+import sys, os, datetime
+
+def pp(*args, **kw):
+    f = kw.get('file', sys.stdout)
+    f.write(kw.get('sep', ' ').join(str(a) for a in args))
+    f.write(kw.get('end', '\n'))
+
+if len(sys.argv) < 2:
+    pp('Usage:', sys.argv[0], '<filename> ...')
+    exit(1)
+
+for filename in sys.argv[1:]:
+    st = os.stat(filename)
+    pp(filename + ':')
+    pp('Accessed:', datetime.datetime.fromtimestamp(st.st_atime).ctime())
+    pp('Modified:', datetime.datetime.fromtimestamp(st.st_mtime).ctime())
+    pp('Created: ', datetime.datetime.fromtimestamp(st.st_ctime).ctime())
+    pp('Size:    ', st.st_size, str(st.st_size / 1024.0 / 1024.0) + 'M')
+    pp('Mode:     {:o}'.format(st.st_mode))
+    pp('Links:   ', st.st_nlink)

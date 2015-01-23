@@ -1,0 +1,42 @@
+#! /bin/sh
+# https://www.virag.si/2012/01/web-video-encoding-tutorial-with-ffmpeg-0-9/
+# brew install ffmpeg --with-fdk-aac
+
+usage()
+{
+    echo $(basename $0) '<noscale|ipad2|ipad3|iphone4|iphone5> <input-file> ...'
+    exit 1
+}
+
+if [ $# -lt 2 ]; then
+    usage
+fi
+
+target_format=$1
+shift
+for source in "$@"; do
+    echo $source
+    case $target_format in
+        ipad2)
+            scale="-vf scale=-1:768"
+            ;;
+        ipad3)
+            scale="-vf scale=-1:1080"
+            ;;
+        iphone4)
+            scale="-vf scale=-1:640"
+            ;;
+        iphone5)
+            scale="-vf scale=-1:1080"
+            ;;
+        noscale)
+            scale=
+            ;;
+        *)
+            usage
+    esac
+    #ffmpeg -i "$source" -vcodec libx264 -vprofile high -preset slow -b:v 500k -maxrate 500k -bufsize 1000k $scale -threads 0 -acodec libfdk_aac -b:a 128k "${source%.*}.$target_format.mp4"
+
+    ffmpeg -i "$source" -vcodec libx264 -vprofile high -preset slow -b:v 500k -maxrate 500k -bufsize 1000k $scale -threads 0 -pass 1 -an -f mp4 -y /dev/null
+    ffmpeg -i "$source" -vcodec libx264 -vprofile high -preset slow -b:v 500k -maxrate 500k -bufsize 1000k $scale -threads 0 -pass 2 -acodec libfdk_aac -b:a 128k -f mp4 "${source%.*}.$target_format.mp4"
+done

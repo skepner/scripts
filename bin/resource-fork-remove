@@ -1,0 +1,15 @@
+#! /bin/sh
+# removes all xattrs for the passed files
+if [ $# -lt 1 ]; then
+    echo removes all xattrs for the passed files
+    echo Usage: $(basename $0) '<filename> ...'
+    exit 1
+fi
+
+for f in "$@"; do
+    for a in $(xattr "$f"); do
+        printf "%s: " "$a"
+        xattr -pl "$a" "$f"
+        xattr -d "$a" "$f"
+    done
+done

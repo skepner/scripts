@@ -1,0 +1,10 @@
+#! /bin/sh
+if [ $# -lt 2 ]; then
+    echo "Usage: $0 <file 1> <file 2>"
+    exit 1
+fi
+
+emacsclient -n -e '(ediff "'"$1"'" "'"$2"'")'
+osascript -e 'tell app "Emacs" to activate'
+
+

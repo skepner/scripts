@@ -1,0 +1,19 @@
+#! /bin/sh
+
+if [ $# -lt 1 ]; then
+   echo Runs command with apple malloc debug
+   echo Usage: $(basename $0) '<command> <arg> ...'
+   exit 1
+fi
+
+export MallocGuardEdges=1
+#export MallocStackLogging=1
+export MallocScribble=1
+export MallocCheckHeapStart=1081651
+export MallocCheckHeapEach=10000
+export MallocCheckHeapAbort=1
+export MallocCorruptionAbort=1
+export MallocErrorAbort=1
+export MallocHelp=1
+
+exec "$@"

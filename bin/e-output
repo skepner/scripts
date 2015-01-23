@@ -1,0 +1,19 @@
+#! /bin/sh
+
+OUT=/tmp/e-output.$$.out
+ERR=/tmp/e-output.$$.err
+
+if [ $# -lt 1 ]; then
+    cat >"$OUT" 2>"$ERR"
+else
+    "$@" >"$OUT" 2>"$ERR"
+fi
+if [ -s "$ERR" ]; then
+    echo '\n\n=======================================================' >> "$ERR"
+    cat "$OUT" >> "$ERR"
+    rm "$OUT"
+else
+    mv "$OUT" "$ERR"
+fi
+e "$ERR"
+(sleep 3; rm "$ERR") &

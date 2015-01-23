@@ -1,0 +1,6 @@
+#! /bin/sh
+if [ -x /usr/bin/ldd ]; then
+    exec /usr/bin/ldd "$@"
+else
+    exec otool -L "$@"
+fi

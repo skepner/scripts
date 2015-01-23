@@ -1,0 +1,8 @@
+#! /bin/sh
+if [ $# -ne 2 ]; then
+    echo Usage: $(basename $0) '<resolution, e.g. 150 or 300> <output-file.png|.jpg>'
+    exit 1
+fi
+GAMMA=32000
+exec scanimage --resolution "$1" -x 215 -y 297 --format=pnm -v | convert - "$2"
+

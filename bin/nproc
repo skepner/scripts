@@ -1,0 +1,6 @@
+#! /bin/sh
+if [ "$(uname -s)" = "Darwin" ]; then
+    /usr/sbin/sysctl -n hw.logicalcpu
+else
+    /usr/bin/nproc
+fi

@@ -1,0 +1,15 @@
+#! /bin/sh
+if [ -x /usr/local/bin/emacsclient ]; then
+    if [ $# -lt 1 ]; then
+        echo "No files specified"
+        exit 1
+    fi
+
+    # osascript -e 'tell app "Emacs" to activate'
+    for f in "$@"; do
+        /usr/local/bin/emacsclient --alternate-editor="" -f /Users/eu/.emacs.d/server/server -n "$f" 2>&1 | grep -v 'connected to remote socket'
+    done
+else
+    exec emacs "$@"
+fi
+exit 0

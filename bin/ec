@@ -1,0 +1,16 @@
+#! /usr/local/bin/bash
+# shell for emacs compile command, it ignores SIGTRAP
+
+trap 'echo ["$@"] SIGHUP ignored' SIGHUP
+
+if [ "$1" == "-c" ]; then
+    shift
+fi
+
+if [ "$1" == "-i" ]; then
+    $SHELL -i
+else
+    #echo "$@"
+    eval "$@"
+fi
+exit $?

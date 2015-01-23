@@ -1,0 +1,41 @@
+#! /usr/bin/osascript
+(* -*- Applescript -*- 
+
+Finds tab in Safari by its name or URL specified in the command line. Brings window with that tab into front (works occasionally)
+
+(c) Eugene Skepner 2015 eu/at/skepner.eu
+GNU GPL version 3
+*)
+on run argv
+	set look_for to item 1 of argv
+	tell application "Safari"
+		activate
+		set winlist to every window
+		set winmatchlist to {}
+		set tabmatchlist to {}
+		set tabnamematchlist to {}
+		repeat with win in winlist
+			set ok to true
+			try
+				set tablist to every tab of win
+			on error errmsg
+				set ok to false
+			end try
+			if ok then
+				repeat with t in tablist
+					if look_for is in (name of t as string) or look_for is in (URL of t as string) then
+						-- log (name of t as string)
+						set current tab of win to t
+						set index of win to 1
+						tell application "System Events"
+							perform action "AXRaise" of window 1 of process "Safari"
+						end tell
+						-- log (get name of the front window)
+						exit repeat
+					end if
+				end repeat
+			end if
+		end repeat
+	end tell
+end run
+
