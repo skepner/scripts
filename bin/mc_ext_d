@@ -1,0 +1,4 @@
+#! /bin/sh
+# prints location of the file extension handlers for midnight commander
+# to be used in ~/.config/mc/mc.ext
+mc -F | grep extension | cut -d ' ' -f 8

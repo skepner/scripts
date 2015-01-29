@@ -2,11 +2,12 @@
 
 OUT=/tmp/e-output.$$.out
 ERR=/tmp/e-output.$$.err
+exit_code=0
 
 if [ $# -lt 1 ]; then
     cat >"$OUT" 2>"$ERR"
 else
-    "$@" >"$OUT" 2>"$ERR"
+    "$@" >"$OUT" 2>"$ERR" || exit_code=1
 fi
 if [ -s "$ERR" ]; then
     echo '\n\n=======================================================' >> "$ERR"
@@ -17,3 +18,4 @@ else
 fi
 e "$ERR"
 (sleep 3; rm "$ERR") &
+exit $exit_code
