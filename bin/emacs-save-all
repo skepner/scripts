@@ -1,2 +1,2 @@
 #! /bin/sh
-/usr/local/bin/emacsclient --alternate-editor="" -f /Users/eu/.emacs.d/server/server --eval '(save-some-buffers t)' >&/dev/null
+$HOME/bin/emacsclient --eval '(save-some-buffers t)' >&/dev/null

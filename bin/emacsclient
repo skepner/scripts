@@ -1,0 +1,8 @@
+#! /bin/sh
+if [ -x /usr/local/bin/emacsclient ]; then
+    #exec /usr/local/bin/emacsclient --alternate-editor="" -f /Users/eu/.emacs.d/server/server "$@" 2>&1 | grep -v 'connected to remote socket'
+    exec /usr/local/bin/emacsclient "$@"
+else
+    echo /usr/local/bin/emacsclient not found
+    exit 1
+fi

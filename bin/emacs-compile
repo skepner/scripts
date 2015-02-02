@@ -6,4 +6,4 @@ if [ $# -ne 1 ]; then
 fi
 
 osascript -e 'tell app "Emacs" to activate'
-exec /usr/local/bin/emacsclient --alternate-editor="" -f /Users/eu/.emacs.d/server/server --eval '(progn (delete-other-windows) (compile "'"$1"'"))' >&/dev/null
+exec $HOME/bin/emacsclient --eval '(progn (delete-other-windows) (compile "'"$1"'"))' >&/dev/null
