@@ -1,0 +1,12 @@
+#! /bin/sh
+
+SRC="${@: -1}"
+BASENAME=$(basename "$SRC" .tex)
+echo $BASENAME
+OUTPUT_DIR=/tmp
+TARGET_BASE="$BASENAME".pdf
+TARGET=$(dirname "$SRC")/"$TARGET_BASE"
+
+/usr/texbin/pdflatex -interaction=nonstopmode -file-line-error -output-directory "$OUTPUT_DIR" "$@" &&
+mv "$OUTPUT_DIR"/"$TARGET_BASE" "$TARGET" &&
+open "$TARGET"
