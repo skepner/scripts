@@ -1,4 +1,5 @@
 #! /bin/sh
+# https://www.gnu.org/software/grep/manual/grep.html
 
 if [ -x /usr/local/bin/ggrep ]; then
     GREP=/usr/local/bin/ggrep
@@ -14,10 +15,19 @@ usage()
 
 IGNORE_CASE=-i
 RECURSIVE=-r
+LINE_NUMBERS="-n"
 IGNORE_DIRS="--exclude-dir=build --exclude-dir=dist"
-IGNORE_FILES=""
+IGNORE_FILES="--exclude=*~ --exclude=*.bak --exclude=*.obsolete* --exclude=*.htm* --exclude=*.xls* --exclude=*.doc* --exclude=*.elc --exclude=*.o --exclude=*.py[co] --exclude=*.so.*"
 OPTIONS=""
-COLOR=--color
+
+COLOR="--color=always"
+
+# ‘1’ bold, ‘4’ underline, ‘5’ blink, ‘7’ inverse, ‘39’ default fg c, ‘30’ to ‘37’ fg c, ‘90’ to ‘97’ for 16-color mode fg c,
+# ‘38;5;0’ to ‘38;5;255’ 88-color and 256-color modes fg colors, ‘49’ default bg c, ‘40’ to ‘47’ for bg c, ‘100’ to ‘107’ for 16-color mode bg c,
+# ‘48;5;0’ to ‘48;5;255’ 88-color and 256-color modes bg c.
+# ms - matching text, fn - filename, ln - line no, bn - col no, se - :
+# default "ms=01;31:mc=01;31:sl=:cx=:fn=35:ln=32:bn=32:se=36"
+export GREP_COLORS="ms=01;31:mc=01;31:sl=:cx=:fn=34:ln=22:bn=32:se=0"
 
 while getopts ":Calv" opt; do
     case $opt in
@@ -48,5 +58,5 @@ while getopts ":Calv" opt; do
 done
 shift $((OPTIND-1))
 
-echo "$GREP" $RECURSIVE $OPTIONS $PATTERN "$@"
-exec "$GREP" $IGNORE_CASE $RECURSIVE $IGNORE_DIRS $OPTIONS $COLOR "$@"
+echo "$GREP" $IGNORE_CASE $RECURSIVE $LINE_NUMBERS $OPTIONS $PATTERN "$@"
+exec "$GREP" $IGNORE_CASE $RECURSIVE $IGNORE_DIRS $IGNORE_FILES $LINE_NUMBERS $OPTIONS $COLOR "$@"
