@@ -1,5 +1,5 @@
 #! /bin/sh
 brew update
-brew upgrade
+brew upgrade --all
 #brew outdated
 #echo brew install $(brew outdated)
