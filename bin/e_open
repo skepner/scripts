@@ -103,7 +103,7 @@ def filename(name):
 if "/usr/local/bin" not in os.environ['PATH']:
     os.environ['PATH'] = "/usr/local/bin:/opt/local/bin:" + os.environ['PATH']
 
-print >>sys.stderr, sys.argv
+# print >>sys.stderr, sys.argv
 import optparse
 parser = optparse.OptionParser(usage='%prog [options] filename')
 parser.add_option("--host", dest="host", default=None)
@@ -122,7 +122,7 @@ if args:
             #cmd  = ["growlnotify", "-m", "Unrecognized file name: " + name]
             #raise RuntimeError('name not recognized: ' + name)
         #subprocess.Popen(['osascript', '-e', 'tell app "Emacs" to activate']).communicate()
-        print >>sys.stderr, cmd
+        # print >>sys.stderr, cmd
         subprocess.Popen(cmd).communicate()
 else:
     parser.print_help()

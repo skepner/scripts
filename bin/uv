@@ -1,0 +1,15 @@
+#! /bin/sh
+
+if [ -z "$BUCHP" ]; then
+    echo No BUCHP >&2
+    exit 1
+fi
+
+if [ $# -lt 1 ]; then
+    echo Usage $0 '<filename> ...' >&2
+    exit 1
+fi
+
+for f in "$@"; do
+    echo $BUCHP | gpg --symmetric --passphrase-fd 0 "$f" && rm -f "$f"
+done

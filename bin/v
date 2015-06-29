@@ -1,0 +1,40 @@
+#! /bin/sh
+
+if [ $# -lt 1 ]; then
+    echo Usage $0 '<filename> ...' >&2
+    exit 1
+fi
+
+TT=""
+on_exit()
+{
+    if [ ! -z "$TT" ]; then
+        rm -f $TT
+    fi
+}
+trap on_exit EXIT
+
+GPG="gpg --batch --yes -q"
+
+for f in "$@"; do
+    if [[ $f =~ .*\.gpg$ ]]; then
+        T1=$(mktemp -t v)
+        T2=$(basename "$f" .gpg)
+        T3="${T2##*.}"
+        T="$T1.$T3"
+        mv "$T1" "$T"
+        TT="$TT $T"
+        if [ -z "$BUCHP" ]; then
+            $GPG -o "$T" "$f"
+        else
+            echo $BUCHP | $GPG --passphrase-fd 0 -o "$T" "$f"
+        fi
+        echo $TT
+        e_open "$T"
+    else
+        e_open "$f"
+    fi
+done
+
+# give e_open time before removing
+sleep 3
