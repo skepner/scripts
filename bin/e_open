@@ -67,7 +67,7 @@ def apple_open(data):
         name = name[:-1]
     while (name.startswith("'") and name.endswith("'")) or (name.startswith('"') and name.endswith('"')) or (name.startswith('[') and name.endswith(']')) or (name.startswith('(') and name.endswith(')')):
         name = name[1:-1]
-    if os.path.exists(name) and re.compile(r'\.(xlsx?|docx?|pptx?|pdf|html?|jpe?g|png|avi|mkv)$', re.I).search(name):
+    if os.path.exists(name) and re.compile(r'\.(xls[xm]?|docx?|pptx?|pdf|html?|jpe?g|png|avi|mkv)$', re.I).search(name):
         cmd = ["open", name]
     else:
         cmd = None
