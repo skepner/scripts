@@ -5,8 +5,9 @@ if [ -x /usr/local/bin/emacsclient ]; then
         exit 1
     fi
 
-    # osascript -e 'tell app "Emacs" to activate'
-
+    if [ -x /usr/bin/osascript ]; then
+        osascript -e 'tell app "Emacs" to activate'
+    fi
     exec /usr/local/bin/emacsclient -n "$@"
     # for f in "$@"; do
     #     /usr/local/bin/emacsclient --alternate-editor="" -f /Users/eu/.emacs.d/server/server -n "$f" 2>&1 | grep -v 'connected to remote socket'

@@ -4,7 +4,5 @@ if [ $# -lt 2 ]; then
     exit 1
 fi
 
-emacsclient -n -e '(ediff "'"$1"'" "'"$2"'")'
 osascript -e 'tell app "Emacs" to activate'
-
-
+emacsclient -n -e '(ediff "'"$1"'" "'"$2"'")'
