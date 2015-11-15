@@ -103,7 +103,7 @@ def filename(name):
 if "/usr/local/bin" not in os.environ['PATH']:
     os.environ['PATH'] = "/usr/local/bin:/opt/local/bin:" + os.environ['PATH']
 
-# print >>sys.stderr, sys.argv
+print >>sys.stderr, sys.argv, "pwd:", os.getcwd()
 import optparse
 parser = optparse.OptionParser(usage='%prog [options] filename')
 parser.add_option("--host", dest="host", default=None)
