@@ -1,0 +1,33 @@
+#! /usr/bin/osascript
+(* -*- Applescript -*-
+
+Finds tab in iTerm 2.9 and 3.x by its name (title) specified in the command line.
+
+(c) Eugene Skepner 2015 eu/at/skepner.eu
+GNU GPL version 3
+*)
+on run argv
+        set look_for to item 1 of argv
+        tell application "iTerm"
+                activate
+                repeat with my_window in windows
+                        tell my_window
+                                set the_name to get name of current session
+                                if the_name contains look_for then
+                                        select my_window
+                                        return
+                                end if
+                                repeat with my_tab in tabs
+                                        tell my_tab
+                                                set the_name to get name of current session
+                                                if the_name contains look_for then
+                                                        select my_window
+                                                        select my_tab
+                                                        return
+                                                end if
+                                        end tell
+                                end repeat
+                        end tell
+                end repeat
+        end tell
+end run
