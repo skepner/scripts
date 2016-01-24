@@ -11,5 +11,6 @@ if [ $# -lt 1 ]; then
 fi
 
 for f in "$@"; do
+    resource-fork-remove "$f"
     echo $BUCHP | gpg --symmetric --passphrase-fd 0 "$f" && rm -f "$f"
 done
