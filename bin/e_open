@@ -6,13 +6,15 @@ import sys, os, subprocess, re
 #os.environ['TMPDIR'] = '/tmp'
 
 def url(data):
-    if data.startswith('http:') or data.startswith('https:') or data.startswith('mailto:') or data.endswith('.html') or data.endswith('.htm') or data.endswith('.xhtml'):
+    # print >>sys.stderr, 'url', data
+    if data.startswith('http:') or data.startswith('https:') or data.startswith('mailto:') or (":" not in data and (data.endswith('.html') or data.endswith('.htm') or data.endswith('.xhtml'))):
         cmd = ["open", data]
     else:
         cmd = None
     return cmd
 
 def python_stack_trace(data):
+    # print >>sys.stderr, 'python_stack_trace', data
     m = re.search(r'[\s"]*File "([^"]+)", line (\d+)', data.replace('\\', ''))
     if m:
         filename = m.group(1).replace('/home/eu/AcmacsWeb.app/Contents/Resources/acmacs/', '/Users/eu/ac/acmacs/acmacs/').replace('/home/eu/', '/Users/eu/')
@@ -24,6 +26,7 @@ def python_stack_trace(data):
     return cmd
 
 def python_log(data):
+    # print >>sys.stderr, 'python_log', data
     cmd = None
     m = re.match(r'.*\[(?:acmacs\.)?(acmacs\.[A-Za-z0-9\._]+)\s+(\d+)\]', data)
     if m:
@@ -46,6 +49,7 @@ def perl_stack_trace(data):
     return cmd
 
 def gcc_error_message(data):
+    # print >>sys.stderr, 'gcc_error_message', data
     m = re.match(r'^(/.+):(\d+)', data)
     if m:
         cmd = ["emacsclient", "-n", "+" + m.group(2), m.group(1)]
@@ -62,6 +66,7 @@ def gcc_error_message(data):
 #     return cmd
 
 def apple_open(data):
+    # print >>sys.stderr, 'apple_open', name
     name = os.path.expanduser(os.path.expandvars(data.strip()))
     if name[-1] == ':':
         name = name[:-1]
@@ -77,6 +82,7 @@ def apple_open(data):
     return cmd
 
 def filename(name):
+    # print >>sys.stderr, 'filename', name
     name = name.strip()
     while (name.startswith("'") and name.endswith("'")) or (name.startswith('"') and name.endswith('"')) or (name.startswith('[') and name.endswith(']')) or (name.startswith('(') and name.endswith(')')):
         name = name[1:-1]
@@ -87,7 +93,7 @@ def filename(name):
             name = '/scp:' + m.group(1)
     else:
         m = re.match(r'([^:]+):(\d+)?$', name) # filename and line_no (perhaps empty for iTerm2 support)
-        #print >>sys.stderr, name, m and m.groups()
+        # print >>sys.stderr, name, m and m.groups()
         if m:
             name, line_no = m.groups()
     if options.host:
