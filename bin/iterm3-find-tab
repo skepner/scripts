@@ -13,6 +13,7 @@ on run argv
                 repeat with my_window in windows
                         tell my_window
                                 set the_name to get name of current session
+                                log the_name
                                 if the_name contains look_for then
                                         select my_window
                                         return
