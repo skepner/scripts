@@ -14,52 +14,54 @@ def use(cmd, pathname):
 
 # ======================================================================
 
-def remote_host():
-    remote = subprocess.Popen("who | awk '/^eu .+(dial|ipconnect)/ { gsub(/[\(\)]/, \"\", $NF); printf $NF; exit; }'", shell=True, stdout=subprocess.PIPE).communicate()[0]
-    if not remote:
-        remote = subprocess.Popen("who | awk '/^eu.+\(/ { gsub(/[\(\)]/, \"\", $NF); printf $NF; exit; }'", shell=True, stdout=subprocess.PIPE).communicate()[0]
-    return remote or None
+# def remote_host():
+#     remote = subprocess.Popen("who | awk '/^eu .+(dial|ipconnect)/ { gsub(/[\(\)]/, \"\", $NF); printf $NF; exit; }'", shell=True, stdout=subprocess.PIPE).communicate()[0]
+#     if not remote:
+#         remote = subprocess.Popen("who | awk '/^eu.+\(/ { gsub(/[\(\)]/, \"\", $NF); printf $NF; exit; }'", shell=True, stdout=subprocess.PIPE).communicate()[0]
+#     return remote or None
 
 # ======================================================================
 
 def tramp(pathname):
     result = False
     pathname = '/scp:%s:%s' % (socket.gethostname(), pathname)
-    #cmd = "ssh -t -p 2157 localhost /Users/eu/bin/e '\"%s\"'" % pathname
-    cmd = "ssh %s /Users/eu/bin/e '\"%s\"' >/dev/null" % (remote_host(), pathname)
+    # cmd = "ssh -t -p 2157 localhost /Users/eu/bin/e '\"%s\"'" % pathname
+    # cmd = "ssh %s /Users/eu/bin/e '\"%s\"' >/dev/null" % (remote_host(), pathname)
+    cmd = None
     use(cmd, pathname)
     result = True
     return result
 
 # ======================================================================
 
-def acnas(pathname):
-    result = False
-    if pathname.startswith('/acnas/'):
-        pathname = pathname.replace('/acnas/', '/Volumes/gilberte/acnas/')
-        #cmd = "ssh -t -p 2157 localhost /Users/eu/bin/e '\"%s\"'" % pathname
-        cmd = "ssh -t vaat /Users/eu/bin/e '\"%s\"'" % pathname
-        use(cmd, pathname)
-        result = True
-    return result
+# def acnas(pathname):
+#     result = False
+#     if pathname.startswith('/acnas/'):
+#         pathname = pathname.replace('/acnas/', '/Volumes/gilberte/acnas/')
+#         #cmd = "ssh -t -p 2157 localhost /Users/eu/bin/e '\"%s\"'" % pathname
+#         cmd = "ssh -t vaat /Users/eu/bin/e '\"%s\"'" % pathname
+#         use(cmd, pathname)
+#         result = True
+#     return result
 
 # ======================================================================
 
-def eu(pathname):
-    result = False
-    if pathname.startswith('/Users/eu/'):
-        pathname = pathname.replace('/Users/eu/', '/Users/eu/gilberte/')
-        cmd = "ssh -t -p 2157 localhost /Users/eu/bin/e '\"%s\"'" % pathname
-        use(cmd, pathname)
-        result = True
-    return result
+# def eu(pathname):
+#     result = False
+#     if pathname.startswith('/Users/eu/'):
+#         pathname = pathname.replace('/Users/eu/', '/Users/eu/gilberte/')
+#         # cmd = "ssh -t -p 2157 localhost /Users/eu/bin/e '\"%s\"'" % pathname
+#         cmd = None
+#         use(cmd, pathname)
+#         result = True
+#     return result
 
 # ======================================================================
 
-def default(pathname):
-    use(None, '/gilberte:' + pathname)
-    result = True
-    return result
+# def default(pathname):
+#     use(None, '??? ' + pathname)
+#     result = True
+#     return result
 
 # ======================================================================
 
@@ -68,4 +70,4 @@ if len(sys.argv) > 1:
     filename = sys.argv[1]
 
 pathname = os.path.abspath(filename)
-tramp(pathname) or acnas(pathname) or eu(pathname) or default(pathname)
+tramp(pathname) # or eu(pathname) or default(pathname)
