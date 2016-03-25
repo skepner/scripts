@@ -1,18 +1,37 @@
 #! /bin/sh
-if [ -x /usr/local/bin/emacsclient ]; then
-    if [ $# -lt 1 ]; then
-        echo "No files specified"
-        exit 1
-    fi
 
-    if [ -x /usr/bin/osascript ]; then
-        osascript -e 'tell app "Emacs" to activate'
+open_local()
+{
+    if [ -x /usr/local/bin/emacsclient ]; then
+        if [ $# -lt 1 ]; then
+            echo "No files specified"
+            exit 1
+        fi
+
+        if [ -x /usr/bin/osascript ]; then
+            osascript -e 'tell app "Emacs" to activate'
+        fi
+        exec /usr/local/bin/emacsclient -n "$@"
+        # for f in "$@"; do
+        #     /usr/local/bin/emacsclient --alternate-editor="" -f /Users/eu/.emacs.d/server/server -n "$f" 2>&1 | grep -v 'connected to remote socket'
+        # done
+    else
+        exec emacs "$@"
     fi
-    exec /usr/local/bin/emacsclient -n "$@"
-    # for f in "$@"; do
-    #     /usr/local/bin/emacsclient --alternate-editor="" -f /Users/eu/.emacs.d/server/server -n "$f" 2>&1 | grep -v 'connected to remote socket'
-    # done
-else
-    exec emacs "$@"
-fi
-exit 0
+}
+
+open_iterm()
+{
+    for f in "$@"; do
+        echo "/scp:$HOSTNAME:`abspath $f`"
+    done
+}
+
+case $HOSTNAME in
+    i19|albertine)
+        open_iterm "$@"
+        ;;
+    *)
+        open_local "$@"
+        ;;
+esac
