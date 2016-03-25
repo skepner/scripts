@@ -23,12 +23,12 @@ open_local()
 open_iterm()
 {
     for f in "$@"; do
-        echo "/scp:$HOSTNAME:`abspath $f`"
+        echo "/scp:`hostname`:`abspath $f`"
     done
 }
 
-case $HOSTNAME in
-    i19|albertine)
+case `hostname` in
+    i19)
         open_iterm "$@"
         ;;
     *)
