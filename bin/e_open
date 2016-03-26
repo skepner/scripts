@@ -92,7 +92,7 @@ def filename(name):
         if name[:5] not in ('/scp:', '/ssh:'):
             name = '/scp:' + m.group(1)
     else:
-        m = re.match(r'([^:]+):(\d+)?$', name) # filename and line_no (perhaps empty for iTerm2 support)
+        m = re.match(r'([^:]+):+(\d+)?$', name) # filename and line_no (perhaps empty for iTerm2 support)
         # print >>sys.stderr, name, m and m.groups()
         if m:
             name, line_no = m.groups()
