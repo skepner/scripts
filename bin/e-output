@@ -16,6 +16,6 @@ if [ -s "$ERR" ]; then
 else
     mv "$OUT" "$ERR"
 fi
-e "$ERR"
-(sleep 3; rm "$ERR") &
+~/bin/e "$ERR"
+(sleep 120; rm "$ERR") &
 exit $exit_code
