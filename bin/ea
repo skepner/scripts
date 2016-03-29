@@ -24,7 +24,7 @@ def use(cmd, pathname):
 
 def tramp(pathname):
     result = False
-    pathname = '/scp:%s:%s' % (socket.gethostname(), pathname)
+    pathname = '/scp:%s:%s\r        ' % (socket.gethostname(), pathname)
     # cmd = "ssh -t -p 2157 localhost /Users/eu/bin/e '\"%s\"'" % pathname
     # cmd = "ssh %s /Users/eu/bin/e '\"%s\"' >/dev/null" % (remote_host(), pathname)
     cmd = None
