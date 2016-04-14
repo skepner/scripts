@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- encoding: utf-8; -*-
 
-import sys, os, subprocess, re, datetime
+import sys, os, subprocess, re, datetime, glob
 
 #os.environ['TMPDIR'] = '/tmp'
 
@@ -81,6 +81,16 @@ def apple_open(data):
         cmd = None
     return cmd
 
+def whocc_table_store(data):
+    m = re.match(r'^(h3|h1pdm|b):(CDC|CNIC|MELB|NIID|NIMR):([\d\.]+):(?:(YAMAGATA|VICTORIA|2009PDM):)?(turkey|guinea-pig)', data)
+    if m:
+        flu_type, lab, date, lineage, rbc_species = m.groups()
+        filenames = glob.glob(os.path.join(os.environ["HOME"], "ac", "tables-store", flu_type.upper(), lab.upper(), "*-{}-{}.ac*".format(rbc_species, date)))
+        cmd = ["emacsclient", "-n"] + filenames
+    else:
+        cmd = None
+    return cmd
+
 def filename(name):
     # print >>sys.stderr, 'filename', name
     name = name.strip()
@@ -125,7 +135,7 @@ if args:
         if m:
             name = m.group(1)
         name = os.path.expanduser(os.path.expandvars(name))
-        cmd = url(name) or python_stack_trace(name) or python_log(name) or perl_stack_trace(name) or gcc_error_message(name) or apple_open(name) or filename(name)
+        cmd = url(name) or python_stack_trace(name) or python_log(name) or perl_stack_trace(name) or gcc_error_message(name) or apple_open(name) or whocc_table_store(name) or filename(name)
         if cmd is None:
             #cmd  = ["say", "command not recognized"]
             cmd  = ["say", "-v", "Milena", u"нах"]
