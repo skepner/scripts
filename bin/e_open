@@ -97,17 +97,18 @@ def filename(name):
     while (name.startswith("'") and name.endswith("'")) or (name.startswith('"') and name.endswith('"')) or (name.startswith('[') and name.endswith(']')) or (name.startswith('(') and name.endswith(')')):
         name = name[1:-1]
     line_no = None
-    m = re.match(r'^/?([A-Za-z0-9\.]+:.+)', name) # remote filename
-    if m:
+    m_remote = re.match(r'^/?([A-Za-z0-9\.]+:.+)', name) # remote filename
+    if m_remote:
         if name[:5] not in ('/scp:', '/ssh:'):
-            name = '/scp:' + m.group(1)
+            name = '/scp:' + m_remote.group(1)
     else:
-        m = re.match(r'([^:]+):+(\d+)?$', name) # filename and line_no (perhaps empty for iTerm2 support)
+        m_line = re.match(r'([^:]+):+(\d+)?(?::(\d+))?:*$', name) # filename and line_no and column_no and trailing colon (for iTerm2 support)
         # print >>sys.stderr, name, m and m.groups()
-        if m:
-            name, line_no = m.groups()
+        if m_line:
+            name, line_no, column_no = m_line.groups()
     if options.host:
         name = '/scp:' + options.host + ':' + name
+    print >>sys.stderr, name, "line_no:", line_no, "remote:", m_remote
     if os.path.exists(name) or name[:5] == '/scp:':
         if line_no is not None:
             cmd = ["emacsclient", "-n", "+" + line_no, name]
