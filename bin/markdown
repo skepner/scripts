@@ -1,5 +1,19 @@
-#! /bin/sh
+#! /bin/bash
 # https://github.com/joeyespo/grip
 # sudo pip install grip
 # grip --export "$2" "$1"
-grip --export -
+if [ $# -eq 0 ]; then
+    grip --export -
+elif [[ $# -eq 1 && -f "$1" ]]; then
+    D=$(mktemp -d -t $(basename $0))
+    F="$D"/"$(basename $1).html"
+    grip "$1" --export "$F" 2>/dev/null
+    open "$F"
+    sleep 1
+    rm -rf "$D"
+else
+    echo "Usage:"
+    echo "$0 <source.md >target.html"
+    echo "$0 source.md  --> opens resulting html"
+    exit 1
+fi
