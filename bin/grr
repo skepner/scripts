@@ -17,7 +17,7 @@ IGNORE_CASE=-i
 RECURSIVE=-r
 LINE_NUMBERS="-n"
 IGNORE_DIRS="--exclude-dir=build --exclude-dir=dist --exclude-dir=sandbox"
-IGNORE_FILES="--exclude=*~ --exclude=*.bak --exclude=*.obsolete* --exclude=*.htm* --exclude=*.xls* --exclude=*.doc* --exclude=*.elc --exclude=*.o --exclude=*.py[co] --exclude=*.so.*"
+IGNORE_FILES="--exclude=*~ --exclude=*.bak --exclude=*.obsolete* --exclude=*.htm* --exclude=*.xls* --exclude=*.doc* --exclude=*.elc --exclude=*.o --exclude=*.py[co] --exclude=*.so.* --exclude=TAGS"
 OPTIONS=""
 
 COLOR="--color=always"
