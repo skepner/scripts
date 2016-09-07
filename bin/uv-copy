@@ -1,0 +1,19 @@
+#! /bin/sh
+
+if [ -z "$BUCHP" ]; then
+    echo No BUCHP >&2
+    exit 1
+fi
+
+if [ $# -ne 2 ]; then
+    echo Usage $0 '<source> <target.gpg | target-dir>' >&2
+    exit 1
+fi
+
+if [ -d "$2" ]; then
+    TARGET="$2"/$(basename "$1").gpg
+else
+    TARGET="$2"
+fi
+resource-fork-remove "$1"
+echo $BUCHP | gpg --symmetric --passphrase-fd 0 -o "$TARGET" "$1"

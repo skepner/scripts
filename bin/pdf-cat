@@ -1,0 +1,12 @@
+#! /bin/sh
+if [ $# -lt 3 ]; then
+    echo Usage "$0 <target.pdf> <source1.pdf> <source2.pdf> ..."
+    exit 1
+fi
+TARGET="$1"
+if [ -f "$TARGET" ]; then
+    echo "$TARGET exists, not overwriting" >&2
+    exit 1
+fi
+shift
+exec /usr/local/bin/qpdf --empty --pages "$@" -- "$TARGET"

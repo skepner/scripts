@@ -1,0 +1,10 @@
+#! /bin/bash
+if [ $# -lt 2 ]; then
+    echo Usage "$0 <append-to.pdf> <source1.pdf> ..."
+    exit 1
+fi
+TARGET="$1"
+TEMP=$(mktemp XXXXXX)
+/usr/local/bin/qpdf --empty --pages "$@" -- "$TEMP" &&
+    mv "$TARGET" "$TARGET".orig &&
+    mv "$TEMP" "$TARGET"

@@ -1,0 +1,16 @@
+#! /bin/sh
+# converts one page of png into pdf using ghostscript
+
+if [ $# -ne 5 ]; then
+    echo Usage: $0 '<source.pdf> <target.png> <page-no> <png-width> <png-height>'
+    echo Page numbering starts with 1
+    exit 1
+fi
+
+SOURCE="$1"
+TARGET="$2"
+PAGE="$3"
+WIDTH="$4"
+HEIGHT="$5"
+
+exec gs -q -dSAFER -dBATCH -dNOPAUSE -sDEVICE=png16m -sOutputFile="$TARGET" -dFirstPage="$PAGE" -dLastPage="$PAGE" -dPDFFitPage -dUseCropBox -dDEVICEWIDTHPOINTS="$WIDTH" -dDEVICEHEIGHTPOINTS="$HEIGHT" -dTextAlphaBits=4 -dGraphicsAlphaBits=4 "$SOURCE"
