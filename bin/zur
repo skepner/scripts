@@ -1,0 +1,20 @@
+#! /bin/bash
+# http://rclone.org/commands/rclone_sync/
+
+DIR="$HOME/ZUR"
+CONF="--config $DIR/rclone.config"
+OPT="--exclude .DS_Store" # -v --delete-excluded
+
+case $1 in
+    c*)
+        CMD=check
+        ;;
+    s*)
+        CMD=check
+        ;;
+    *)
+        CMD=sync
+        ;;
+esac
+
+rclone $CONF $CMD $OPT $DIR gmail:
