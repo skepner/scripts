@@ -2,8 +2,8 @@
 
 import sys, os, re
 
-sReIgnoreBasenames = re.compile(r'^(.svn)$')
-sBakBasename = re.compile(r'^(.*(~\.[^\.]+|~)|.DS_Store)$')
+sReIgnoreBasenames = re.compile(r'^(.svn|.git)$')
+sBakBasename = re.compile(r'^(.*(~\.[^\.]+|~)|.DS_Store|.*\.~[0-9]+~\..*)$')
 
 def main():
     for root_dir in (sys.argv[1:] or ['.']):
@@ -12,7 +12,7 @@ def main():
         for f in files_to_remove:
             os.unlink(f)
             print f
-    
+
 def walk(start, files_to_remove):
     for root, dirs, files in os.walk(start, topdown=True):
         if not sReIgnoreBasenames.match(os.path.basename(root)):
