@@ -1,0 +1,22 @@
+#! /bin/sh
+
+function failed {
+    echo "FAILED" >&2
+    exit 100
+}
+trap failed ERR
+
+if [ $# -lt 1 ]; then
+    echo Usage $0 '<filename> ...' >&2
+    exit 1
+fi
+
+GPG="gpg --batch --yes -q"
+
+for f in "$@"; do
+    if [[ "$f" =~ .*\.gpg$ ]]; then
+        T="$(dirname $f)/$(basename $f .gpg)"
+        echo $BUCHP | $GPG --passphrase-fd 0 -o "$T" "$f"
+        rm "$f"
+    fi
+done
