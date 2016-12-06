@@ -10,5 +10,5 @@ TARGET=$(dirname "$SRC")/"$TARGET_BASE"
 export PATH=/usr/local/texlive/2015/bin/x86_64-darwin:"$PATH"
 
 pdflatex -interaction=nonstopmode -file-line-error -output-directory "$OUTPUT_DIR" "$@" &&
-mv "$OUTPUT_DIR"/"$TARGET_BASE" "$TARGET" &&
+cat "$OUTPUT_DIR"/"$TARGET_BASE" > "$TARGET" &&
 open "$TARGET"
