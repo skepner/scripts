@@ -91,6 +91,14 @@ def whocc_table_store(data):
         cmd = None
     return cmd
 
+def iterm_trigger(name):
+    m = re.match(r"^(/(?:scp|ssh):.+)\s*\xe2\x94\x82$", name)
+    if m:
+        cmd = ["emacsclient", "-n", m.group(1).strip()]
+    else:
+        cmd = None
+    return cmd
+
 def filename(name):
     # print >>sys.stderr, 'filename', name
     name = name.strip()
@@ -108,7 +116,7 @@ def filename(name):
             name, line_no, column_no = m_line.groups()
     if options.host:
         name = '/scp:' + options.host + ':' + name
-    print >>sys.stderr, name, "line_no:", line_no, "remote:", m_remote
+    # print >>sys.stderr, name, "line_no:", line_no, "remote:", m_remote
     if os.path.exists(name) or name[:5] == '/scp:':
         if line_no is not None:
             cmd = ["emacsclient", "-n", "+" + line_no, name]
@@ -120,12 +128,21 @@ def filename(name):
 
 # ======================================================================
 
+def log(*args):
+    with open("/tmp/e-open.log", "a") as f:
+        f.write("{}\n".format(" ".join(repr(a) for a in args)))
+
+# ----------------------------------------------------------------------
+
 if "/usr/local/bin" not in os.environ['PATH']:
     os.environ['PATH'] = "/usr/local/bin:/opt/local/bin:" + os.environ['PATH']
 
-with open("/tmp/e-open.log", "a") as f:
-    f.write("{} {} {!r}\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), sys.argv, os.getcwd()))
-print >>sys.stderr, datetime.datetime.now(), sys.argv, "pwd:", os.getcwd()
+log(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), sys.argv, os.getcwd())
+
+# with open("/tmp/e-open.log", "a") as f:
+#     f.write("{} {} {!r}\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), sys.argv, os.getcwd()))
+# print >>sys.stderr, datetime.datetime.now(), sys.argv, "pwd:", os.getcwd()
+
 import optparse
 parser = optparse.OptionParser(usage='%prog [options] filename')
 parser.add_option("--host", dest="host", default=None)
@@ -136,7 +153,7 @@ if args:
         if m:
             name = m.group(1)
         name = os.path.expanduser(os.path.expandvars(name))
-        cmd = url(name) or python_stack_trace(name) or python_log(name) or perl_stack_trace(name) or gcc_error_message(name) or apple_open(name) or whocc_table_store(name) or filename(name)
+        cmd = url(name) or python_stack_trace(name) or python_log(name) or perl_stack_trace(name) or gcc_error_message(name) or apple_open(name) or whocc_table_store(name) or iterm_trigger(name) or filename(name)
         if cmd is None:
             #cmd  = ["say", "command not recognized"]
             cmd  = ["say", "-v", "Milena", u"нах"]
@@ -145,6 +162,7 @@ if args:
             #raise RuntimeError('name not recognized: ' + name)
         #subprocess.Popen(['osascript', '-e', 'tell app "Emacs" to activate']).communicate()
         # print >>sys.stderr, cmd
+        log("-->", cmd)
         subprocess.Popen(cmd).communicate()
 else:
     parser.print_help()
