@@ -1,0 +1,118 @@
+#! /bin/bash
+# https://www.gnu.org/software/grep/manual/grep.html
+# http://mywiki.wooledge.org/BashFAQ/020
+# http://stackoverflow.com/questions/1116992/capturing-output-of-find-print0-into-a-bash-array
+
+if [ -x /usr/local/bin/ggrep ]; then
+    # brew tap homebrew/dupes; brew install homebrew/dupes/grep
+    GREP=/usr/local/bin/ggrep
+else
+    GREP=grep
+fi
+XZGREP=xzgrep
+BZGREP=bzgrep
+FIND=find
+
+usage()
+{
+    echo $(basename $0) '[-C (case-sensitive)] [-a (all dirs and files)] [-h (usage)] <pattern> [<directory or files>]' >&2
+    exit 1
+}
+
+IGNORE_CASE=-i
+RECURSIVE=-r
+LINE_NUMBERS="-n"
+FILENAME="-H"
+OPTIONS=""
+
+COLOR="--color=always"
+
+# ‘1’ bold, ‘4’ underline, ‘5’ blink, ‘7’ inverse, ‘39’ default fg c, ‘30’ to ‘37’ fg c, ‘90’ to ‘97’ for 16-color mode fg c,
+# ‘38;5;0’ to ‘38;5;255’ 88-color and 256-color modes fg colors, ‘49’ default bg c, ‘40’ to ‘47’ for bg c, ‘100’ to ‘107’ for 16-color mode bg c,
+# ‘48;5;0’ to ‘48;5;255’ 88-color and 256-color modes bg c.
+# ms - matching text, fn - filename, ln - line no, bn - col no, se - :
+# default "ms=01;31:mc=01;31:sl=:cx=:fn=35:ln=32:bn=32:se=36"
+export GREP_COLORS="ms=01;31:mc=01;31:sl=:cx=:fn=34:ln=22:bn=32:se=0"
+
+function fs()
+{
+    $FIND "${1}" \( -name '*.xls*' -o -name '*.htm*' -o -name '*~' -o -name '*.bak' -o -name '*.obsolete*' -o -name '*.doc*' -o -name '*.elc' -o -name '*.o' -o -name '*.py[co]' -o -name '*.so.*' -o -name TAGS -o -name '.??*' -o -name build -o -name dist -o -name sandbox -o -name .git\* -o -name melpa -o -name elpa -o -name __pycache__ \) -prune -o -type f -print0
+}
+
+function fs_all()
+{
+    $FIND "${1}" -type f -print0
+}
+
+FS=fs
+
+while getopts ":Calv" opt; do
+    case $opt in
+        C)
+            IGNORE_CASE=""
+            ;;
+        a)
+            FS=fs_all
+            ;;
+        l)
+            OPTIONS="$OPTIONS -l"
+            ;;
+        v)
+            OPTIONS="$OPTIONS -v"
+            ;;
+        h)
+            usage
+            ;;
+        -)
+            break
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+PATTERN="$1"
+shift
+
+function grr()
+{
+    case "$1" in
+        *.xz)
+            GR="$XZGREP"
+            ;;
+        *.bz2)
+            GR="$BZGREP"
+            ;;
+        *.gz)
+            GR="$XZGREP"
+            ;;
+        *)
+            GR="$GREP"
+            ;;
+    esac
+    # echo "$GR" $IGNORE_CASE $LINE_NUMBERS $COLOR $OPTIONS $PATTERN "\"$@\""
+    "$GR" $IGNORE_CASE $FILENAME $LINE_NUMBERS $COLOR $OPTIONS $PATTERN "$@"
+}
+
+
+code=0
+if [[ $# -eq 0 || "$1" == "-" ]]; then
+    grr -
+else
+    for ARG in "$@"; do
+        if [ -d "$ARG" ]; then
+            while IFS= read -r -d $'\0' file; do
+                grr "$file"
+            done < <($FS "$ARG")
+        elif [ -f "$ARG" ]; then
+            grr "$ARG"
+        else
+            echo "error: no file/dir: $ARG" >&2
+            code=1
+        fi
+    done
+fi
+
+exit $code
