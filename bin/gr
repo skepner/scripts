@@ -36,7 +36,7 @@ export GREP_COLORS="ms=01;31:mc=01;31:sl=:cx=:fn=34:ln=22:bn=32:se=0"
 
 function fs()
 {
-    $FIND "${1}" \( -name '*.xls*' -o -name '*.htm*' -o -name '*~' -o -name '*.bak' -o -name '*.obsolete*' -o -name '*.doc*' -o -name '*.elc' -o -name '*.o' -o -name '*.py[co]' -o -name '*.so.*' -o -name TAGS -o -name '.??*' -o -name build -o -name dist -o -name sandbox -o -name .git\* -o -name melpa -o -name elpa -o -name __pycache__ \) -prune -o -type f -print0
+    $FIND "${1}" \( -name '*.xls*' -o -name '*.htm*' -o -name '*~' -o -name '*.bak' -o -name '*.obsolete*' -o -name '*.doc*' -o -name '*.elc' -o -name '*.o' -o -name '*.py[co]' -o -name '*.so.*' -o -name TAGS -o -name '.??*' -o -name old -o -name build -o -name dist -o -name sandbox -o -name .git\* -o -name melpa -o -name elpa -o -name __pycache__ \) -prune -o -type f -print0
 }
 
 function fs_all()
