@@ -93,7 +93,7 @@ function grr()
             ;;
     esac
     # echo "$GR" $IGNORE_CASE $LINE_NUMBERS $COLOR $OPTIONS $PATTERN "\"$@\""
-    "$GR" $IGNORE_CASE $FILENAME $LINE_NUMBERS $COLOR $OPTIONS $PATTERN "$@"
+    "$GR" $IGNORE_CASE $FILENAME $LINE_NUMBERS $COLOR $OPTIONS "$PATTERN" "$@"
 }
 
 
