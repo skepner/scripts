@@ -1,0 +1,69 @@
+#! /usr/bin/env osascript
+
+tell application "Mail"
+    set s to the selection
+    set m to item 1 of s
+    set r to all headers of m & "\n" & content of m & "\n"
+    source of m
+end tell
+
+-- ======================================================================
+
+-- on replace_chars(this_text, search_string, replacement_string)
+--  set AppleScript's text item delimiters to the search_string
+--  set the item_list to every text item of this_text
+--  set AppleScript's text item delimiters to the replacement_string
+--  set this_text to the item_list as string
+--  set AppleScript's text item delimiters to ""
+--  return this_text
+-- end replace_chars
+
+-- ======================================================================
+
+-- on escape_double_quotes(this_text)
+--  set AppleScript's text item delimiters to "\""
+--  set the item_list to every text item of this_text
+--  set AppleScript's text item delimiters to the "\\\""
+--  set this_text to the item_list as string
+--  set AppleScript's text item delimiters to ""
+--  return this_text
+-- end escape_double_quotes
+--
+-- on list_of_addresses(source)
+--     set m_to to ""
+--     repeat with i from 1 to (count of source)
+--         if m_to = "" then
+--            set m_to to "[\"" & my escape_double_quotes(address of item i of source) & "\""
+--         else
+--            set m_to to m_to & ", \"" & my escape_double_quotes(address of item i of source) & "\""
+--         end if
+--     end repeat
+--     set m_to to m_to & "]"
+--     return m_to
+-- end list_of_addresses
+--
+-- tell application "Mail"
+--     set s to the selection
+--     set m to item 1 of s
+--     -- properties of m
+-- --     set m_to to ""
+-- --     repeat with i from 1 to (count of (to recipients of m))
+-- --         if m_to = "" then
+-- --            set m_to to "[\"" & my escape_double_quotes(address of item i of to recipients of m) & "\""
+-- --         else
+-- --            set m_to to m_to & ", \"" & my escape_double_quotes(address of item i of to recipients of m) & "\""
+-- --         end if
+-- --     end repeat
+-- --     set m_to to m_to & "]"
+--     set m_subject to subject of m
+--     set m_to to to recipients of m
+--     set x to my list_of_addresses(m_to)
+--     "{\n  \"subject\": \"" & my escape_double_quotes(m_subject) & "\",\n" & ¬
+--     "  \"date\": \"" & date sent of m & "\",\n" & ¬
+--     "  \"reply_to\": \"" & my escape_double_quotes(reply to of m) & "\",\n" & ¬
+--     "  \"from\": \"" & my escape_double_quotes(sender of m) & "\",\n" & ¬
+--     "  \"size\": " & message size of m & ",\n" & ¬
+--     "}"
+-- end tell
+--
+--
