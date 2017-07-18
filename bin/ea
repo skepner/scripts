@@ -67,7 +67,10 @@ def tramp(pathname):
 
 filename="."
 if len(sys.argv) > 1:
-    filename = sys.argv[1]
-
+    filename = sys.argv[1].strip()
+if filename[-2:] == "│·":                 # iterm2 artefacts
+    filename = filename[:-2].strip()
+if not os.path.exists(filename):
+    print("WARNING: \"{}\" not found".format(filename), file=sys.stderr)
 pathname = os.path.abspath(filename)
 tramp(pathname) # or eu(pathname) or default(pathname)
