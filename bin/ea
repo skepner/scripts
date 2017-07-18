@@ -1,4 +1,5 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
+# -*- Encoding: utf-8 -*-
 
 import sys, os, subprocess, re, socket
 
@@ -6,7 +7,7 @@ import sys, os, subprocess, re, socket
 
 def use(cmd, pathname):
     if pathname is not None:
-        print pathname
+        print(pathname)
         open("/tmp/ea", "w").write(pathname)
     if cmd is not None:
         #print cmd
@@ -68,8 +69,6 @@ def tramp(pathname):
 filename="."
 if len(sys.argv) > 1:
     filename = sys.argv[1].strip()
-if filename[-2:] == "│·":                 # iterm2 artefacts
-    filename = filename[:-2].strip()
 if not os.path.exists(filename):
     print("WARNING: \"{}\" not found".format(filename), file=sys.stderr)
 pathname = os.path.abspath(filename)
