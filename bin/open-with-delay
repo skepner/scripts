@@ -1,0 +1,4 @@
+#! /bin/bash
+SLEEP_FOR="$1"
+shift
+(sleep "$SLEEP_FOR"; exec open "$@") &
