@@ -1,0 +1,82 @@
+#! /bin/bash
+
+# https://www.tekrevue.com/tip/how-to-create-a-4gbs-ram-disk-in-mac-os-x/
+# https://gist.github.com/rxin/5085564
+
+DISK_NAME=rdisk
+DISK_SIZE_IN_MB=1024
+
+# ----------------------------------------------------------------------
+
+MOUNT_POINT=/Volumes/"$DISK_NAME"
+DISK_ID_FILE="$MOUNT_POINT"/disk-id
+
+# ----------------------------------------------------------------------
+
+check()
+{
+    if [[ -e "$MOUNT_POINT" ]]; then
+        echo "$MOUNT_POINT" already exists >&2
+        exit 1
+    fi
+}
+
+# ----------------------------------------------------------------------
+
+create()
+{
+    local RAM_VALUE=$(($DISK_SIZE_IN_MB * 2048))
+    local DISK_ID=$(hdiutil attach -nomount ram://$RAM_VALUE)
+    DISK_ID=${DISK_ID%% *}
+    echo "[$DISK_ID]"
+    diskutil erasevolume HFS+ "$DISK_NAME" "$DISK_ID"
+    echo "$DISK_ID" >"$DISK_ID_FILE"
+    chmod 0600 "$DISK_ID_FILE"
+    echo "$DISK_ID"
+    df -H "$MOUNT_POINT"
+}
+
+# ----------------------------------------------------------------------
+
+remove()
+{
+    local DISK_ID
+    read -d $'\x04' DISK_ID < "$DISK_ID_FILE"
+    echo $DISK_ID
+    if [ -n "$DISK_ID" ]; then
+        # umount -f "$DISK_ID"
+        hdiutil detach "$DISK_ID"
+    else
+        echo No ramdisk at "$MOUNT_POINT" >&2
+        exit 2
+    fi
+}
+
+# ----------------------------------------------------------------------
+
+info()
+{
+    hdiutil info
+}
+
+# ----------------------------------------------------------------------
+
+help()
+{
+    echo "Create RAMDISK: $0 -c"
+    echo "Remove RAMDISK: $0 -d"
+    echo "Info:           $0 -i"
+}
+
+# ----------------------------------------------------------------------
+
+if [ "$1" == "-d" ]; then
+    remove
+elif [ "$1" == "-i" ]; then
+    info
+elif [ "$1" == "-c" ]; then
+    check
+    create
+else
+    help
+fi
