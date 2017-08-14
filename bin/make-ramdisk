@@ -9,7 +9,7 @@ DISK_SIZE_IN_MB=1024
 # ----------------------------------------------------------------------
 
 MOUNT_POINT=/Volumes/"$DISK_NAME"
-DISK_ID_FILE="$MOUNT_POINT"/disk-id
+DISK_ID_FILE="$MOUNT_POINT"/ramdisk-id
 
 # ----------------------------------------------------------------------
 
