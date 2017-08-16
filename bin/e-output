@@ -1,7 +1,13 @@
-#! /bin/sh
+#! /bin/bash
 
-OUT=/tmp/e-output.$$.out
-ERR=/tmp/e-output.$$.err
+if [[ -f "/Volumes/rdisk/ramdisk-id" ]]; then
+    OUTPUT_DIR="/Volumes/rdisk"
+else
+    OUTPUT_DIR="/tmp"
+fi
+
+OUT="$OUTPUT_DIR"/e-output.$$.out
+ERR="$OUTPUT_DIR"/e-output.$$.err
 exit_code=0
 
 if [ $# -lt 1 ]; then
