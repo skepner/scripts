@@ -6,8 +6,9 @@ else
     OUTPUT_DIR="/tmp"
 fi
 
-OUT="$OUTPUT_DIR"/e-output.$$.out
-ERR="$OUTPUT_DIR"/e-output.$$.err
+DT=$(date +%Y-%m%d-%H%M)
+OUT="$OUTPUT_DIR"/e-output.${DT}.$$.out
+ERR="$OUTPUT_DIR"/e-output.${DT}.$$.err
 exit_code=0
 
 if [ $# -lt 1 ]; then
