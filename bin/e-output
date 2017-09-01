@@ -1,10 +1,11 @@
 #! /bin/bash
 
 if [[ -f "/Volumes/rdisk/ramdisk-id" ]]; then
-    OUTPUT_DIR="/Volumes/rdisk"
+    OUTPUT_DIR="/Volumes/rdisk/e-output"
 else
-    OUTPUT_DIR="/tmp"
+    OUTPUT_DIR="/tmp/e-output"
 fi
+mkdir -p "$OUTPUT_DIR"
 
 DT=$(date +%Y-%m%d-%H%M)
 OUT="$OUTPUT_DIR"/e-output.${DT}.$$.out
