@@ -1,0 +1,13 @@
+#! /bin/bash
+# http://apple.stackexchange.com/questions/40941/how-do-so-set-date-added-metadata-in-mac-os-x-10-7-lion
+
+if [[ -f "/r/ Download.app" ]]; then
+    mv -f "/r/ Download.app" "/r/ Download.old.app"
+fi
+
+sudo /usr/sbin/systemsetup -setusingnetworktime Off
+sudo /usr/sbin/systemsetup -setdate '01:01:30'  # mm:dd:yy
+# sudo /usr/sbin/systemsetup -settime '00:00:00'  # hh:mm:ss
+echo Copying Download.app from ~/Downloads/
+cp ~/Downloads/" Download.app" "/r/ Download.app"
+sudo /usr/sbin/systemsetup -setusingnetworktime On
