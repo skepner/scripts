@@ -4,7 +4,7 @@
 # https://gist.github.com/rxin/5085564
 
 DISK_NAME=rdisk
-DISK_SIZE_IN_MB=2048
+DISK_SIZE_IN_MB=3072
 
 # ----------------------------------------------------------------------
 
