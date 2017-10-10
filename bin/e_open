@@ -8,6 +8,8 @@ import sys, os, subprocess, re, datetime, glob
 def url(data):
     # print >>sys.stderr, 'url', data
     if data.startswith('http:') or data.startswith('https:') or data.startswith('mailto:') or (":" not in data and (data.endswith('.html') or data.endswith('.htm') or data.endswith('.xhtml'))):
+        if data[-1] == ':':
+            data = data[:-1]    # remove trailing : left by iterm as a line number delimiter
         cmd = ["open", data]
     else:
         cmd = None
