@@ -42,21 +42,27 @@ def python_log(data):
                 break
     return cmd
 
-def perl_stack_trace(data):
-    m = re.match(r'^.+\s+at\s+(.+)\s+line\s+(\d+)', data)
-    if m:
-        cmd = ["emacsclient", "-n", "+" + m.group(2), m.group(1)]
-    else:
-        cmd = None
-    return cmd
+# def perl_stack_trace(data):
+#     m = re.match(r'^.+\s+at\s+(.+)\s+line\s+(\d+)', data)
+#     if m:
+#         cmd = ["emacsclient", "-n", "+" + m.group(2), m.group(1)]
+#     else:
+#         cmd = None
+#     return cmd
 
 def gcc_error_message(data):
     # print >>sys.stderr, 'gcc_error_message', data
-    m = re.match(r'^(/.+):(\d+)', data)
-    if m:
-        cmd = ["emacsclient", "-n", "+" + m.group(2), m.group(1)]
-    else:
-        cmd = None
+    cmd = None
+    m1 = re.match(r'([^:]+):+(\d+)?(?::(\d+))?:*$', name) # filename and line_no and column_no and trailing colon (for iTerm2 support)
+    if m1:
+        cmd = ["emacsclient", "-n", "+" + m1.group(2), m1.group(1)]
+    if not cmd:
+        m2 = re.match(r'^(/.+):(\d+)', data)
+        if m2:
+            # print >>sys.stderr, 'gcc_error_message', m.groups()
+            cmd = ["emacsclient", "-n", "+" + m2.group(2), m2.group(1)]
+    if cmd and options.host:
+        cmd[-1] = "/scp:" + options.host + ":" + cmd[-1]
     return cmd
 
 # def excel(data):
@@ -155,7 +161,7 @@ if args:
         if m:
             name = m.group(1)
         name = os.path.expanduser(os.path.expandvars(name))
-        cmd = url(name) or python_stack_trace(name) or python_log(name) or perl_stack_trace(name) or gcc_error_message(name) or apple_open(name) or whocc_table_store(name) or iterm_trigger(name) or filename(name)
+        cmd = url(name) or python_stack_trace(name) or python_log(name) or gcc_error_message(name) or apple_open(name) or whocc_table_store(name) or iterm_trigger(name) or filename(name)
         if cmd is None:
             #cmd  = ["say", "command not recognized"]
             cmd  = ["say", "-v", "Milena", u"нах"]
