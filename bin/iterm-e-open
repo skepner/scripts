@@ -1,0 +1,42 @@
+#! /bin/bash
+
+if [[ $# -eq 3 ]]; then
+    # localhost
+    HOST=""
+    WORKING_DIR="$1"
+    FILENAME="$2"
+    LINE="$3"
+elif [[ $# -eq 4 ]]; then
+    HOST="$1"
+    WORKING_DIR="$2"
+    FILENAME="$3"
+    LINE="$4"
+else
+    echo "ERROR: unrecognized args: $@"
+    say "unrecognized args in iterm"
+    exit 1
+fi
+if [[ -z "${WORKING_DIR}" && "${FILENAME}" != "/"* ]]; then
+    echo "ERROR: unknown working directory:  HOST=$HOST WORKING_DIR=$WORKING_DIR FILENAME=$FILENAME LINE=$LINE"
+    say "unknown working directory in iterm"
+    exit 1
+fi
+
+echo "HOST=$HOST WORKING_DIR=$WORKING_DIR FILENAME=$FILENAME LINE=$LINE"
+
+if [[ "${FILENAME}" == "/"* ]]; then
+    TO_OPEN="${FILENAME}"
+else
+    TO_OPEN="${WORKING_DIR}/${FILENAME}"
+fi
+if [[ -n "${LINE}" ]]; then
+    TO_OPEN="${TO_OPEN}:${LINE}"
+fi
+
+export PATH="${HOME}/bin:${PATH}"
+
+if [[ -z "${HOST}" ]]; then
+    exec e_open "${TO_OPEN}"
+else
+    exec e_open --host "${HOST}" "${TO_OPEN}"
+fi

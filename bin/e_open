@@ -145,6 +145,7 @@ log(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), sys.argv, os.getcwd()
 #     f.write("{} {} {!r}\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), sys.argv, os.getcwd()))
 # print >>sys.stderr, datetime.datetime.now(), sys.argv, "pwd:", os.getcwd()
 
+print sys.argv
 import optparse
 parser = optparse.OptionParser(usage='%prog [options] filename')
 parser.add_option("--host", dest="host", default=None)
