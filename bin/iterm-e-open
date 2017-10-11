@@ -12,19 +12,19 @@ elif [[ $# -eq 4 ]]; then
     FILENAME="$3"
     LINE="$4"
 else
-    echo "ERROR: unrecognized args: $@"
+    echo "ERROR: $(date): unrecognized args: $@"
     say "unrecognized args in iterm"
     exit 1
 fi
 if [[ -z "${WORKING_DIR}" && "${FILENAME}" != "/"* ]]; then
-    echo "ERROR: unknown working directory:  HOST=$HOST WORKING_DIR=$WORKING_DIR FILENAME=$FILENAME LINE=$LINE"
+    echo "ERROR: $(date): unknown working directory:  HOST=$HOST WORKING_DIR=$WORKING_DIR FILENAME=$FILENAME LINE=$LINE"
     say "unknown working directory in iterm"
     exit 1
 fi
 
-echo "HOST=$HOST WORKING_DIR=$WORKING_DIR FILENAME=$FILENAME LINE=$LINE"
+# echo "HOST=$HOST WORKING_DIR=$WORKING_DIR FILENAME=$FILENAME LINE=$LINE"
 
-if [[ "${FILENAME}" == "/"* ]]; then
+if [[ "${FILENAME}" == "/"* || "${FILENAME}" == "~"* ]]; then
     TO_OPEN="${FILENAME}"
 else
     TO_OPEN="${WORKING_DIR}/${FILENAME}"

@@ -131,8 +131,8 @@ def filename(name):
 # ======================================================================
 
 def log(*args):
-    with open("/tmp/e-open.log", "a") as f:
-        f.write("{}\n".format(" ".join(repr(a) for a in args)))
+    with open("/r/log/e-open.log", "a") as f:
+        f.write("{}\n".format(" ".join(str(a) for a in args)))
 
 # ----------------------------------------------------------------------
 
@@ -145,7 +145,6 @@ log(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), sys.argv, os.getcwd()
 #     f.write("{} {} {!r}\n".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), sys.argv, os.getcwd()))
 # print >>sys.stderr, datetime.datetime.now(), sys.argv, "pwd:", os.getcwd()
 
-print sys.argv
 import optparse
 parser = optparse.OptionParser(usage='%prog [options] filename')
 parser.add_option("--host", dest="host", default=None)
@@ -165,7 +164,7 @@ if args:
             #raise RuntimeError('name not recognized: ' + name)
         #subprocess.Popen(['osascript', '-e', 'tell app "Emacs" to activate']).communicate()
         # print >>sys.stderr, cmd
-        log("-->", cmd)
+        log("    -->", cmd)
         subprocess.Popen(cmd).communicate()
 else:
     parser.print_help()
