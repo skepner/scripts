@@ -4,7 +4,7 @@
 # https://gist.github.com/rxin/5085564
 
 DISK_NAME=rdisk
-DISK_SIZE_IN_MB=3072
+DISK_SIZE_IN_MB=4096
 
 # ----------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ create()
     echo "$DISK_ID"
     df -H "$MOUNT_POINT"
     sudo rm -f /r && sudo ln -s "$MOUNT_POINT" /r
-    mkdir /r/T /r/log /r/mail
+    mkdir /r/T /r/log /r/mail /r/mail/mu
 }
 
 # ----------------------------------------------------------------------
