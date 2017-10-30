@@ -1,0 +1,25 @@
+#! /bin/bash
+
+TARGET=/Volumes/White
+
+fail()
+{
+    echo ERROR: "$@" >&2
+    exit 2
+}
+
+trap fail ERR
+
+if [[ ! -f /r/ramdisk-id ]]; then
+    fail No /r/ramdisk-id
+fi
+
+if ! mount | grep "${TARGET}" >/dev/null 2>&1; then
+    fail No "${TARGET}" mounted
+fi
+
+if [ ! -d "${TARGET}"/rdisk ]; then
+    mkdir "${TARGET}"/rdisk
+fi
+
+rsync -av --exclude=.fseventsd --exclude=.TemporaryItems --exclude=.DocumentRevisions-V100 --exclude=.~lock\* --exclude=' Download.app' /r/ "${TARGET}"/rdisk
