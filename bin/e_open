@@ -55,7 +55,10 @@ def gcc_error_message(data):
     cmd = None
     m1 = re.match(r'([^:]+):+(\d+)?(?::(\d+))?:*$', name) # filename and line_no and column_no and trailing colon (for iTerm2 support)
     if m1:
-        cmd = ["emacsclient", "-n", "+" + m1.group(2), m1.group(1)]
+        if m1.group(2):
+            cmd = ["emacsclient", "-n", "+" + m1.group(2), m1.group(1)]
+        else:
+            cmd = ["emacsclient", "-n", m1.group(1)]
     if not cmd:
         m2 = re.match(r'^(/.+):(\d+)', data)
         if m2:
