@@ -12,12 +12,28 @@ OUT="$OUTPUT_DIR"/e-output.${DT}.$$.out
 ERR="$OUTPUT_DIR"/e-output.${DT}.$$.err
 exit_code=0
 
-if [ $# -lt 1 ]; then
-    cat >"$OUT" 2>"$ERR"
+if [[ $# -gt 1 && "$1" == "--mode" ]]; then
+    echo "-*- $2 -*-" >"$ERR"
+    shift
+    shift
 else
-    "$@" >"$OUT" 2>"$ERR" || exit_code=1
+    printf "" >"$ERR"
 fi
-if [ -s "$ERR" ]; then
+
+if [[ $# -gt 1 && "$1" == "--wait" ]]; then
+    WAIT="$2"
+    shift
+    shift
+else
+    WAIT=120
+fi
+
+if [[ $# -lt 1 ]]; then
+    cat >"$OUT" 2>>"$ERR"
+else
+    "$@" >"$OUT" 2>>"$ERR" || exit_code=1
+fi
+if [[ -s "$ERR" ]]; then
     printf '\n\n=======================================================\n' >> "$ERR"
     cat "$OUT" >> "$ERR"
     rm "$OUT"
@@ -25,5 +41,5 @@ else
     mv "$OUT" "$ERR"
 fi
 ~/bin/e "$ERR"
-(sleep 120; rm "$ERR") &
+(sleep "$WAIT"; rm "$ERR") &
 exit $exit_code
