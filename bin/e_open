@@ -55,6 +55,8 @@ def gcc_error_message(data):
     cmd = None
     m1 = re.match(r'([^:]+):+(\d+)?(?::(\d+))?:*$', name) # filename and line_no and column_no and trailing colon (for iTerm2 support)
     if m1:
+        if m1.group(1)[-4:] in [".pdf", ".doc", "docx", ".xls", "xlsx", "xlsm"]:
+            return None
         if m1.group(2):
             cmd = ["emacsclient", "-n", "+" + m1.group(2), m1.group(1)]
         else:
@@ -77,8 +79,8 @@ def gcc_error_message(data):
 #     return cmd
 
 def apple_open(data):
-    # print >>sys.stderr, 'apple_open', name
     name = os.path.expanduser(os.path.expandvars(data.strip()))
+    # print >>sys.stderr, 'apple_open', name
     if name[-1] == ':':
         name = name[:-1]
     try:
