@@ -1,6 +1,7 @@
 #! /bin/bash
 
-TARGET=/Volumes/White
+# TARGET=/Volumes/White
+TARGET=albertine:/syn/eu/rdisk/$(date '+%Y-%m%d')
 
 fail()
 {
@@ -14,12 +15,12 @@ if [[ ! -f /r/ramdisk-id ]]; then
     fail No /r/ramdisk-id
 fi
 
-if ! mount | grep "${TARGET}" >/dev/null 2>&1; then
-    fail No "${TARGET}" mounted
-fi
+# if ! mount | grep "${TARGET}" >/dev/null 2>&1; then
+#     fail No "${TARGET}" mounted
+# fi
 
-if [ ! -d "${TARGET}"/rdisk ]; then
-    mkdir "${TARGET}"/rdisk
-fi
+# if [ ! -d "${TARGET}"/rdisk ]; then
+#     mkdir "${TARGET}"/rdisk
+# fi
 
-rsync -av --exclude=.fseventsd --exclude=.TemporaryItems --exclude=.DocumentRevisions-V100 --exclude=.~lock\* --exclude=' Download.app' /r/ "${TARGET}"/rdisk
+rsync -az "$@" --exclude=.fseventsd --exclude=.TemporaryItems --exclude=.DocumentRevisions-V100 --exclude=.~lock\* --exclude=' Download.app' --exclude log --exclude mail --exclude T --exclude rtags --exclude .Trashes --exclude .DS_Store /r/ "${TARGET}"
