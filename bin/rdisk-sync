@@ -23,4 +23,24 @@ fi
 #     mkdir "${TARGET}"/rdisk
 # fi
 
-rsync -az "$@" --exclude=.fseventsd --exclude=.TemporaryItems --exclude=.DocumentRevisions-V100 --exclude=.~lock\* --exclude=' Download.app' --exclude log --exclude mail --exclude T --exclude rtags --exclude .Trashes --exclude .DS_Store /r/ "${TARGET}"
+EXCLUDE_FILE=/r/.rsync.exclude
+cat >"${EXCLUDE_FILE}" <<EOF
+.DS_Store
+.DocumentRevisions-V100
+.TemporaryItems
+.Trashes
+.fseventsd
+.rsync.exclude
+.~lock*
+AD
+R
+T
+e-output
+log
+mail
+rtags
+EOF
+
+# echo "${TARGET}"
+printf "%s  " $(date +%Y-%m%d-%H%M)
+gtime rsync -az "$@" --exclude-from="${EXCLUDE_FILE}" /r/ "${TARGET}"

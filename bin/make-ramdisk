@@ -47,7 +47,9 @@ remove()
     echo $DISK_ID
     if [ -n "$DISK_ID" ]; then
         # umount -f "$DISK_ID"
-        hdiutil detach "$DISK_ID"
+        if ! hdiutil detach "$DISK_ID"; then
+            fuser -cu "$MOUNT_POINT"
+        fi
     else
         echo No ramdisk at "$MOUNT_POINT" >&2
         exit 2
