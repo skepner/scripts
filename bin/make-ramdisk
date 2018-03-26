@@ -35,7 +35,7 @@ create()
     echo "$DISK_ID"
     df -H "$MOUNT_POINT"
     sudo rm -f /r && sudo ln -s "$MOUNT_POINT" /r
-    mkdir /r/T /r/log /r/mail /r/mail/mu
+    mkdir /r/T /r/log /r/log/apache2 /r/mail /r/mail/mu
 }
 
 # ----------------------------------------------------------------------
