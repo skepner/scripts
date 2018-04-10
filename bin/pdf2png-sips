@@ -1,0 +1,7 @@
+#! /bin/bash
+if [ $# -ne 3 ]; then
+    echo Usage $(basename $0) "<input.pdf> <output-size-pixels> <output.png>"
+    exit 1
+fi
+
+exec /usr/bin/sips -s format png -Z "$2" "$1" --out "$3"
