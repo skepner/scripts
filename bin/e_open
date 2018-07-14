@@ -142,7 +142,7 @@ def filename(name):
 # ======================================================================
 
 def log(*args):
-    with open("/r/log/e-open.log", "a") as f:
+    with open("/Users/eu/tmp/r/log/e-open.log", "a") as f:
         f.write("{}\n".format(" ".join(str(a) for a in args)))
 
 # ----------------------------------------------------------------------
