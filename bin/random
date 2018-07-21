@@ -1,0 +1,8 @@
+#! /bin/sh
+((MAX_UINT=2**32))
+if [[ -x /usr/bin/shuf ]]; then
+    # https://unix.stackexchange.com/questions/140750/generate-random-numbers-in-specific-range
+    shuf -i 1-${MAX_UINT} -n 1
+else
+    /usr/bin/od -vAn -N4 -tu < /dev/urandom | tr -d ' \n'
+fi
