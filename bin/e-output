@@ -12,10 +12,9 @@ OUT="$OUTPUT_DIR"/e-output.${DT}.$$.out
 ERR="$OUTPUT_DIR"/e-output.${DT}.$$.err
 exit_code=0
 
-echo "$@" > "$ERR"
-echo "==== ERR ===================================================" >> "$ERR"
 if [[ $# -gt 1 && "$1" == "--mode" ]]; then
-    echo "-*- $2 -*-" >>"$ERR"
+    echo "-*- $2 -*-" >"$ERR"
+    echo "" >> "$ERR"
     shift
     shift
 fi
@@ -28,6 +27,8 @@ else
     WAIT=120
 fi
 
+echo "$@" >> "$ERR"
+echo '==== ERR ====================================================' >> "$ERR"
 if [[ $# -lt 1 ]]; then
     cat >"$OUT" 2>>"$ERR"
 else
