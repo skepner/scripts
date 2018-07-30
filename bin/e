@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 open_local()
 {
@@ -23,7 +23,15 @@ open_local()
 open_iterm()
 {
     for f in "$@"; do
-        printf "/scp:`hostname`:`abspath $f`\r      "
+        f="$(abspath ${f})"
+        case "${f}" in
+            /syn/*.pdf)
+                printf "/e_open:$f\r      "
+                ;;
+            *)
+                printf "/scp:`hostname`:$f\r      "
+                ;;
+        esac
     done
 }
 
