@@ -17,6 +17,9 @@ if [[ $# -gt 1 && "$1" == "--mode" ]]; then
     echo "" >> "$ERR"
     shift
     shift
+else
+    echo "-*- eu-ad-output -*-" >"$ERR"
+    echo "" >> "$ERR"
 fi
 
 if [[ $# -gt 1 && "$1" == "--wait" ]]; then
