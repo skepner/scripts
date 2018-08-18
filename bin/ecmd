@@ -1,0 +1,9 @@
+#! /bin/bash
+BUFNAME="&ecmd-$(date +%Y-%m%d-%H%M) $@"
+EVAL="(progn (switch-to-buffer \"${BUFNAME}\") (async-shell-command \"date; echo $@; echo; $@\" \"${BUFNAME}\") (eu-shell-mode) (run-at-time \"0.2 sec\" nil 'beginning-of-buffer))"
+# echo ${EVAL}
+ARGS="--no-wait --quiet --suppress-output"
+emacsclient ${ARGS} --eval "${EVAL}"
+if [ -x /usr/bin/osascript ]; then
+    osascript -e 'tell app "Emacs" to activate'
+fi
