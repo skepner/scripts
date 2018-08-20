@@ -1,5 +1,5 @@
 #! /bin/bash
-BUFNAME="&ecmd-$(date +%Y-%m%d-%H%M) $@"
+BUFNAME="//ecmd-$(date +%Y-%m%d-%H%M) $@"
 EVAL="(progn (switch-to-buffer \"${BUFNAME}\") (async-shell-command \"date; echo $@; echo; $@\" \"${BUFNAME}\") (eu-shell-mode) (run-at-time \"0.2 sec\" nil 'beginning-of-buffer))"
 # echo ${EVAL}
 ARGS="--no-wait --quiet --suppress-output"
