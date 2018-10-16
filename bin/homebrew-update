@@ -2,6 +2,5 @@
 brew update
 brew upgrade
 brew cleanup
-brew cask cleanup
 #brew outdated
 #echo brew install $(brew outdated)
